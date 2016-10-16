@@ -1,0 +1,12 @@
+*.pyc
+.DS_Store
+*.swp
+/venv/
+/static/
+/media/
+/tmp/
+/.vagrant/
+/Vagrantfile.local
+/node_modules
+/npm-debug.log
+*.sqlite3

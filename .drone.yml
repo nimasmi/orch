@@ -1,0 +1,44 @@
+build:
+  flake8:
+    image: python:3.5
+    commands:
+      - XDG_CACHE_HOME=/drone/pip-cache pip install flake8
+      - flake8 orch --ignore=E501 --exclude=*/migrations/*,*/tests/*,orch/settings/*
+      - flake8 orch/orch/settings --ignore=F405
+  jscs:
+    image: node:4.2.4
+    commands:
+      - npm install -g jscs@"^1.12.0" --quiet
+      - jscs ./orch
+  test:
+    image: python:3.4
+    commands:
+      # Install requirements
+      - XDG_CACHE_HOME=/drone/pip-cache pip install wheel
+      - XDG_CACHE_HOME=/drone/pip-cache pip install -r requirements.txt
+
+      # Run system checks
+      - python manage.py check
+
+      # Check for missing migrations
+      - bash -c "! python manage.py makemigrations -e --dry-run --noinput"
+
+      # Run tests
+      - python manage.py test
+
+    environment:
+      - PGHOST=127.0.0.1
+      - PGUSER=postgres
+
+cache:
+  mount:
+    - node_modules
+    - /drone/pip-cache
+
+compose:
+  db:
+    image: postgres:9.4
+    environment:
+     - POSTGRES_DB=orch
+  cache:
+    image: redis:2.8
