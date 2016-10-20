@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils.functional import cached_property
 
 from wagtail.contrib.settings.models import BaseSetting, register_setting
 from wagtail.wagtailadmin.edit_handlers import (FieldPanel, MultiFieldPanel,
@@ -36,14 +37,20 @@ class LinkFields(models.Model):
     class Meta:
         abstract = True
 
+    @cached_property
     def get_link_text(self):
         if self.link_text:
             return self.link_text
-
         if self.link_page:
             return self.link_page.title
-
         return ''
+
+    @cached_property
+    def get_url(self):
+        if self.link_page:
+            return self.link_page.url
+        else:
+            return self.link_url
 
     content_panels = [
         MultiFieldPanel([
