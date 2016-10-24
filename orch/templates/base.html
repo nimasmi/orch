@@ -48,75 +48,93 @@
     <body class="{% block body_class %}template-{{ page.get_verbose_name|slugify }}{% endblock %}">
 
         <!-- Google Tag Manager -->
-        <noscript><iframe src="//www.googletagmanager.com/ns.html?id={{ GOOGLE_TAG_MANAGER_ID }}"
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-W27N4G"
         height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','{{ GOOGLE_TAG_MANAGER_ID }}');</script>
+        })(window,document,'script','dataLayer','GTM-W27N4G');</script>
         <!-- End Google Tag Manager -->
 
         {% wagtailuserbar %}
 
         <header>
-            <div class="container logo-container">
-                <a href="/" class="logo">
-                    <img src="{% static 'img/logo.png' %}">
-                    Orchestra
-                </a>
-            </div>
-            <section>
-                <a href="#" class="menu-button">Menu</a>
-                <div class="container">
-
-                    {% primarynav %}
-
-                    {% secondarynav %}
-
-                    <form action="{% url 'search' %}" method="get" role="search">
-                        <input type="text" placeholder="Search…" name="query"{% if search_query %} value="{{ search_query }}{% endif %}">
-                        <input type="submit" value="Search">
-                    </form>
-
-                </div>
-            </section>
 
             {% block breadcrumbs %}
                 {% include "navigation/breadcrumbs.html" %}
             {% endblock %}
 
-        </header>
 
-        <main>
-            {% block content %}{% endblock %}
+        <nav class="light-blue lighten-1" role="navigation" aria-label="Primary">
+            <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">
+                    <img src="{% static 'img/logo.png' %}">
+                    Orchestra
+                </a>
+
+                {% primarynav %}
+                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+            </div>
+            {# {% secondarynav %} #}
+        </nav>
+
+        </header>
+        <main class="container">
+                {% block content %}{% endblock %}
         </main>
 
-        <footer>
+        {% comment %}
+        <footer class="page-footer">
 
-            <div class="newsletter">
-                <h1>Stay up to date</h1>
-                <p>Sign up to receive our quarterly newsletter</p>
+            <div class="container">
+
+                <div class="newsletter">
+                    <h1>Stay up to date</h1>
+                    <p>Sign up to receive our quarterly newsletter</p>
+                </div>
+
+                <section>
+                    <h2> Follow us </h2>
+                    <a href="https://twitter.com/{{ TWITTER_HANDLE }}"> <i class="ion-social-twitter"></i> </a>
+                </section>
+
             </div>
 
-            <section>
-                <h2> Follow us </h2>
-                <a href="https://twitter.com/{{ TWITTER_HANDLE }}"> <i class="ion-social-twitter"></i> </a>
-                <a href="https://www.linkedin.com/company/{{ LINKEDIN_COMPANY_ID }}"> <i class="ion-social-linkedin"></i> </a>
-            </section>
+        </footer>
+        {% endcomment %}
+        <footer class="page-footer orange">
+            <div class="container">
+                <div class="row">
+                    <div class="col l6 s12">
+                        <h5 class="white-text">Some info</h5>
+                        <p class="grey-text text-lighten-4">Marshmallow tart marzipan jelly beans gingerbread tootsie roll tiramisu. Ice cream brownie bear claw jelly chocolate bar cotton candy fruitcake. Bonbon carrot cake jelly dragée donut biscuit jujubes biscuit icing. Tiramisu topping pudding wafer halvah bear claw sugar plum cookie.</p>
 
-            <section>
-                {% footernav %}
-            </section>
 
-            <div class="container copyright" role="contentinfo">
-                {% if COPYRIGHT %}
-                    <p>© {% now "Y" %} {{ COPYRIGHT }}</p>
-                {% endif %}
-
-                <div class="site-credit">Site by <a href="https://torchbox.com/">Torchbox</a></div>
+                    </div>
+                    <div class="col l3 s12">
+                        <h5 class="white-text">Settings</h5>
+                            {% footernav %}
+                    </div>
+                    <div class="col l3 s12">
+                        <h5 class="white-text">Connect</h5>
+                        <ul>
+                            <li><a class="white-text" href="#!">Link 1</a></li>
+                            <li><a class="white-text" href="#!">Link 2</a></li>
+                            <li><a class="white-text" href="#!">Link 3</a></li>
+                            <li><a class="white-text" href="#!">Link 4</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+            <div class="footer-copyright" role="contentinfo">
 
+                <div class="container">
+                    © {% now "Y" %} Burford Orchestra
+                    <span class='pull-right'>
+                    Site by <a class="orange-text text-lighten-3" href="https://torchbox.com/">Torchbox</a>
+                    </span>
+                </div>
+            </div>
         </footer>
 
         <script type="text/javascript" src="{% static 'js/main.js' %}"></script>

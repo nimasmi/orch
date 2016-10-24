@@ -1,10 +1,7 @@
-{% load wagtailcore_tags %}
-<nav role="navigation" aria-label="Tertiary">
-    <ul class="footer-links">
-        {% for item in footernav %}
-            <li>
-                <a href="{{ item.get_url }}">{{ item.get_link_text }}</a>
-            </li>
-        {% endfor %}
-    </ul>
-</nav>
+<ul>
+    {% for item in footernav %}
+    <li>
+        <a href="{{ item.get_url }}">{{ item.get_link_text }}</a>
+    </li>
+    {% endfor %}
+</ul>

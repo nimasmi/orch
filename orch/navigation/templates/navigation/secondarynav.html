@@ -1,6 +1,12 @@
-{% load wagtailcore_tags %}
 <nav role="navigation" aria-label="Secondary">
-    <ul class="secondary" role="menubar">
+    <ul class="right hide-on-med-and-down" role="menubar">
+        {% for item in secondarynav %}
+            <li role="presentation">
+                <a href="{{ item.get_url }}" role="menuitem">{{ item.get_link_text }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <ul id="nav-mobile" class="side-nav">
         {% for item in secondarynav %}
             <li role="presentation">
                 <a href="{{ item.get_url }}" role="menuitem">{{ item.get_link_text }}</a>
