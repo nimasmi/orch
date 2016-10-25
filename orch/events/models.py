@@ -15,7 +15,8 @@ from django.utils.translation import ugettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.wagtailadmin.edit_handlers import (FieldPanel, FieldRowPanel,
                                                 InlinePanel, MultiFieldPanel,
-                                                StreamFieldPanel)
+                                                ObjectList, StreamFieldPanel,
+                                                TabbedInterface)
 from wagtail.wagtailcore.fields import RichTextField, StreamField
 from wagtail.wagtailcore.models import (Orderable, Page, PageManager,
                                         PageQuerySet)
@@ -78,7 +79,7 @@ class Rehearsal(models.Model):
         FieldPanel('time', classname='full'),
         SnippetChooserPanel('location'),
         FieldPanel('first_half'),
-        FieldPanel('first_half', classname='full'),
+        FieldPanel('second_half'),
     )
 
 
@@ -182,7 +183,6 @@ class EventPage(Page, SocialFields, ListingFields):
         InlinePanel('event_types', label="Event types"),
 
         FieldPanel('location'),
-        InlinePanel('rehearsals', label="Rehearsals"),
         InlinePanel('pieces', label="Pieces"),
 
         FieldPanel('introduction'),
@@ -192,11 +192,22 @@ class EventPage(Page, SocialFields, ListingFields):
         InlinePanel('related_pages', label="Related pages"),
     ]
 
+    rehearsal_panels = [
+        InlinePanel('rehearsals', label="Rehearsals"),
+    ]
+
     promote_panels = (
         Page.promote_panels +  # slug, seo_title, show_in_menus, search_description
         SocialFields.promote_panels +
         ListingFields.promote_panels
     )
+
+    edit_handler = TabbedInterface([
+        ObjectList(content_panels, heading='Content'),
+        ObjectList(rehearsal_panels, heading='Rehearsals'),
+        ObjectList(Page.promote_panels, heading='Promote'),
+        ObjectList(Page.settings_panels, heading='Settings', classname="settings"),
+    ])
 
     def clean_fields(self, exclude=None):
         errors = defaultdict(list)
