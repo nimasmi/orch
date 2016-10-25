@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 import requests
+from geopy.geocoders import Nominatim
 from wagtail.wagtailadmin.edit_handlers import FieldPanel, MultiFieldPanel
 from wagtail.wagtailsnippets.models import register_snippet
 
@@ -46,31 +47,26 @@ class Location(models.Model):
     ]
 
     def clean(self):
+        geolocator = Nominatim()
         try:
-            location = "%s, %s, %s, %s, %s" % (
+            location_string = "%s %s %s %s %s" % (
                 self.address_line_one, self.address_line_two, self.city, self.county_or_state, self.zip_or_postal_code
             )
-            data = requests.get(
-                'http://nominatim.openstreetmap.org/search.php',
-                params={'q': location, 'format': 'json'}
-            ).json()
-        except:
-            if self.latitude is not None and self.longitude is not None:
-                return
+            location = geolocator.geocode(location_string, exactly_one=True)
+        except Exception as e:
             raise ValidationError({
-                'address_line_one': 'Impossible to connect to the geolocation server.'
+                'address_line_one': e
             })
 
         self.latitude = None
         self.longitude = None
-        if len(data) > 0:
-            first_result = data[0]
-            self.latitude = first_result['lat']
-            self.longitude = first_result['lon']
+        if location:
+            self.latitude = location.latitude
+            self.longitude = location.longitude
         else:
             raise ValidationError({
                 'address_line_one':
-                'Unable to find coordinates for the given location.'
+                'Unable to find coordinates for the given location: {}. Try using different or fewer fields.'.format(location_string)
             })
 
     def __str__(self):
