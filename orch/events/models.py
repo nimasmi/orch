@@ -20,6 +20,8 @@ from wagtail.wagtailadmin.edit_handlers import (FieldPanel, FieldRowPanel,
 from wagtail.wagtailcore.fields import RichTextField, StreamField
 from wagtail.wagtailcore.models import (Orderable, Page, PageManager,
                                         PageQuerySet)
+from wagtail.wagtaildocs.edit_handlers import DocumentChooserPanel
+from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
 from wagtail.wagtailsearch import index
 from wagtail.wagtailsnippets.edit_handlers import SnippetChooserPanel
 from wagtail.wagtailsnippets.models import register_snippet
@@ -149,7 +151,7 @@ class EventPage(Page, SocialFields, ListingFields):
     poster = models.ForeignKey('wagtaildocs.Document', null=True, blank=True,
                                related_name='+', on_delete=models.SET_NULL)
 
-    header_image = models.ForeignKey('wagtailimages.Image', null=True, blank=True,
+    header_image = models.ForeignKey('images.CustomImage', null=True, blank=True,
                                      on_delete=models.SET_NULL, related_name='+',
                                      help_text="Leave blank to have no header image.")
 
@@ -180,11 +182,14 @@ class EventPage(Page, SocialFields, ListingFields):
             ])],
             heading='End'
         ),
+        FieldPanel('cost'),
         InlinePanel('event_types', label="Event types"),
+        DocumentChooserPanel('poster'),
 
-        FieldPanel('location'),
+        SnippetChooserPanel('location'),
         InlinePanel('pieces', label="Pieces"),
 
+        ImageChooserPanel('header_image'),
         FieldPanel('introduction'),
         StreamFieldPanel('body'),
 
