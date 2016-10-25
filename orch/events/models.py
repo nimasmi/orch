@@ -115,6 +115,8 @@ class EventPageQuerySet(PageQuerySet):
             .order_by('-start_date')
         )
 
+EventPageManager = PageManager.from_queryset(EventPageQuerySet)
+
 
 class EventPage(Page, SocialFields, ListingFields):
     start_date = models.DateField()
@@ -144,7 +146,7 @@ class EventPage(Page, SocialFields, ListingFields):
     introduction = models.TextField(blank=True)
     body = StreamField(StoryBlock())
 
-    objects = PageManager.from_queryset(EventPageQuerySet)()
+    objects = EventPageManager()
 
     parent_page_types = ['events.EventIndexPage']
 
