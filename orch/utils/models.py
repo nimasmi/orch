@@ -152,6 +152,9 @@ class CallToActionSnippet(LinkFields):
         ImageChooserPanel('image'),
     ]
 
+    def __str__(self):
+        return self.title
+
 
 @register_setting
 class SocialMediaSettings(BaseSetting):
