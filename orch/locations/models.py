@@ -24,7 +24,7 @@ class Location(models.Model):
     longitude = models.FloatField(editable=False, null=True)
 
     panels = [
-        FieldPanel('introduction'),
+        FieldPanel('title'),
         MultiFieldPanel(
             [
                 FieldPanel('landline_telephone'),
