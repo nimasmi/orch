@@ -115,7 +115,16 @@ class EventPageQuerySet(PageQuerySet):
             .order_by('-start_date')
         )
 
-EventPageManager = PageManager.from_queryset(EventPageQuerySet)
+
+class EventPageManager(PageManager):
+    def get_queryset(self):
+        return EventPageQuerySet(self.model, using=self._db)
+
+    def upcoming(self):
+        return self.get_queryset().upcoming()
+
+    def past(self):
+        return self.get_queryset().past()
 
 
 class EventPage(Page, SocialFields, ListingFields):
@@ -240,7 +249,7 @@ class EventIndexPage(Page):
     def upcoming_events(self):
         return (
             EventPage.objects
-            .live().public().descendant_of(self).future()
+            .live().public().descendant_of(self).upcoming()
         )
 
     @cached_property
