@@ -10,17 +10,22 @@
     </div>
 
     <h2>Next concert</h2>
-    {{ next_concert }}
+    <a href="{% pageurl next_concert %}">{{ next_concert }}</a>
+    {{ next_concert.start_date }}
 
     {% if next_other_event %}
     <h2>Next other event</h2>
-    {{ next_other_event }}
+    <a href="{% pageurl next_other_event %}">{{ next_other_event }}</a>
+    {{ next_other_event.start_date }}
     {% endif %}
 
     {% if upcoming_events %}
     <h2>Upcoming events</h2>
     {% for event in upcoming_events %}
-    {{ event }}
+    <div class="event-listing">
+        <a href="{% pageurl event %}">{{ event }}</a>
+        {{ event.start_date }}
+    </div>
     {% endfor %}
     {% endif %}
 
