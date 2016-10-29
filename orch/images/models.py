@@ -3,8 +3,26 @@ from django.db import models
 from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
 
+from wagtail.wagtailadmin.edit_handlers import FieldPanel
 from wagtail.wagtailimages.models import (AbstractImage, AbstractRendition,
                                           Image)
+from wagtail.wagtailsnippets.models import register_snippet
+
+
+# @register_snippet
+# class ImageLicence(models.Model):
+#     name = models.CharField(max_length=256)
+#     description = models.TextField()
+#     attribution_required = models.BooleanField(default=True)
+# 
+#     panels = [
+#         FieldPanel('name'),
+#         FieldPanel('description'),
+#         FieldPanel('attribution_required'),
+#     ]
+# 
+#     def __str__(self):
+#         return self.name
 
 
 # We define our own custom image class to replace wagtailimages.Image,
@@ -12,6 +30,7 @@ from wagtail.wagtailimages.models import (AbstractImage, AbstractRendition,
 class CustomImage(AbstractImage):
     alt = models.CharField(max_length=255, blank=True)
     credit = models.CharField(max_length=255, blank=True)
+    # licence = models.ForeignKey(ImageLicence, null=True, on_delete=models.SET_NULL)
 
     admin_form_fields = Image.admin_form_fields + (
         'alt',

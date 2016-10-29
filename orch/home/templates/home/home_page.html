@@ -2,12 +2,32 @@
 {% load wagtailcore_tags wagtailimages_tags static %}
 
 {% block content %}
-    <h1>{{ page.title }}</h1>
+<div class="section no-pad-bot" id="index-banner">
+    <h1 class="header center orange-text">{{ page.title }}</h1>
 
-    {{ page.strapline }}
+    <div class="row center">
+        <h5 class="header col s12 light">{{ page.strapline }}</h5>
+    </div>
+
+    <h2>Next concert</h2>
+    {{ next_concert }}
+
+    {% if next_other_event %}
+    <h2>Next other event</h2>
+    {{ next_other_event }}
+    {% endif %}
+
+    {% if upcoming_events %}
+    <h2>Upcoming events</h2>
+    {% for event in upcoming_events %}
+    {{ event }}
+    {% endfor %}
+    {% endif %}
+
 
     {% include "includes/call_to_action.html" %}
 
     {% include "includes/share.html" %}
+</div>
 
 {% endblock %}
