@@ -20,11 +20,11 @@ class Composer(models.Model):
                                              null=True)
 
     class Meta:
-        ordering = 'name',
+        ordering = 'short_name',
 
     def __str__(self):
         if self.death:
-            return "{name} ({birth}—{death})".format(**self.__dict__)
+            return "{name} ({birth}–{death})".format(**self.__dict__)
         return "{name} (b. {birth})".format(**self.__dict__)
 
     panels = (

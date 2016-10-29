@@ -60,6 +60,9 @@ class EventPageEventType(models.Model):
         SnippetChooserPanel('event_type'),
     ]
 
+    def __str__(self):
+        return self.event_type.__str__()
+
 
 class Rehearsal(models.Model):
     event = ParentalKey('events.EventPage', related_name='rehearsals')

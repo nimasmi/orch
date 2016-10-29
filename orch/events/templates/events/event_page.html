@@ -13,13 +13,35 @@
 
     <section class="main-body">
         <div class="container">
-            {{ page.start_date }}
-            {{ page.start_time }}
-            {{ page.end_date }}
-            {{ page.end_time }}
-            {{ page.event_types.all|join:", " }}
-            {{ page.location.title }}
+            {{ page.start_date }} {{ page.start_time|default:"" }}
+            {% if page.end_date or page.end_time %}
+                {% if page.end_date and page.end_date != page.start_date %}
+                    – {{ page.end_date }} {{ page.end_time|default:"" }}
+                {% else %}
+                    – {{ page.end_time }}
+                {% endif %}
+            {% endif %}
+            <br>
+            Types: {{ page.event_types.all|join:", " }}
+            <br>
+            Location: {{ page.location.title }}
         </div>
+
+        <div>
+            <ul class="programme">
+            {% for performance in page.pieces.all %}
+            <li>
+            <span class="piece_title">
+                {{ performance.piece.title }}
+            </span>
+            <span class="piece_composer">
+                {{ performance.piece.composer.short_name }}
+            </span>
+            </li>
+            {% endfor %}
+            </ul>
+        </div>
+
 
         <div class="container">
             {{ page.body }}
