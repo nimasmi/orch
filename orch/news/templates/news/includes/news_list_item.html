@@ -1,0 +1,21 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+                    <li>
+                        <a href="{% pageurl news_item %}">
+                            {% if news_item.listing_image %}
+                                {% image news_item.listing_image fill-450x300 %}
+                            {% endif %}
+                            <div>
+                                <h3 role="listitem">
+                                    {% if news_item.listing_title %}
+                                        {{ news_item.listing_title }}
+                                    {% else %}
+                                        {{ news_item.title }}
+                                    {% endif %}
+                                </h3>
+                                <span>{{ news_item.display_date }}</span>
+                                {% if news_item.listing_summary %}
+                                    <p>{{ news_item.listing_summary }}</p>
+                                {% endif %}
+                            </div>
+                        </a>
+                    </li>

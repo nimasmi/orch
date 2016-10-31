@@ -17,27 +17,8 @@
 
         {% if news %}
             <ul role="list">
-                {% for n in news %}
-                    <li>
-                        <a href="{% pageurl n %}">
-                            {% if n.listing_image %}
-                                {% image n.listing_image fill-450x300 %}
-                            {% endif %}
-                            <div>
-                                <h2 role="listitem">
-                                    {% if n.listing_title %}
-                                        {{ n.listing_title }}
-                                    {% else %}
-                                        {{ n.title }}
-                                    {% endif %}
-                                </h2>
-                                <span>{{ n.display_date }}</span>
-                                {% if n.listing_summary %}
-                                    <p>{{ n.listing_summary }}</p>
-                                {% endif %}
-                            </div>
-                        </a>
-                    </li>
+                {% for news_item in news %}
+                    {% include 'news/includes/news_list_item.html' %}
                 {% endfor %}
             </ul>
             {% include "includes/pagination.html" %}
