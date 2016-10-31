@@ -21,7 +21,7 @@
                     {% include 'news/includes/news_list_item.html' %}
                 {% endfor %}
             </ul>
-            {% include "includes/pagination.html" %}
+            {% include "includes/pagination.html" with subpages=news %}
         {% else %}
             {# no items #}
         {% endif %}

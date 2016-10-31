@@ -87,8 +87,9 @@ class NewsPage(Page, SocialFields, ListingFields):
         InlinePanel('related_pages', label="Related pages"),
     ]
 
-    promote_panels = Page.promote_panels + SocialFields.promote_panels + \
-        ListingFields.promote_panels
+    promote_panels = (Page.promote_panels +
+                      SocialFields.promote_panels +
+                      ListingFields.promote_panels)
 
     subpage_types = []
     parent_page_types = ['NewsIndex']
