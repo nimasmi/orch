@@ -5,6 +5,7 @@ from django.db.models.functions import Coalesce
 
 from modelcluster.fields import ParentalKey
 from wagtail.wagtailadmin.edit_handlers import (FieldPanel, InlinePanel,
+                                                MultiFieldPanel,
                                                 StreamFieldPanel)
 from wagtail.wagtailcore.fields import StreamField
 from wagtail.wagtailcore.models import Page
@@ -53,6 +54,12 @@ class NewsPage(Page, SocialFields, ListingFields):
         help_text="Use this field to override the date that the "
         "news item appears to have been published."
     )
+    expiry_date = models.DateTimeField(
+        null=True, blank=False,
+        help_text="Use this field to determine a date after which this news "
+        "item should no longer be treated as 'current' (i.e. to retire from "
+        "home page)."
+    )
     introduction = models.TextField(blank=True)
     body = StreamField(StoryBlock())
     call_to_action = models.ForeignKey(
@@ -68,7 +75,10 @@ class NewsPage(Page, SocialFields, ListingFields):
     ]
 
     content_panels = Page.content_panels + [
-        FieldPanel('publication_date'),
+        MultiFieldPanel([
+            FieldPanel('publication_date'),
+            FieldPanel('expiry_date'),
+        ], 'Dates'),
         FieldPanel('introduction'),
         StreamFieldPanel('body'),
         SnippetChooserPanel('call_to_action'),
